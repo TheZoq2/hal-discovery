@@ -1,0 +1,5 @@
+[default.general]
+chip="stm32f103c8"
+
+[default.gdb]
+enabled = true
