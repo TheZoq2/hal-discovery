@@ -15,9 +15,3 @@ embedded-hal = "0.2.4"
 [dependencies.stm32f1xx-hal]
 features = ["stm32f103"]
 version = "0.6.1"
-
-[[bin]]
-name = "0_initial"
-
-[[bin]]
-name = "1_led"
