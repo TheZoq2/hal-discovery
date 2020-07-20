@@ -18,8 +18,6 @@ version = "0.6.1"
 
 [[bin]]
 name = "0_initial"
-path = "src/0_initial.rs"
 
 [[bin]]
 name = "1_led"
-path = "src/1_led.rs"
