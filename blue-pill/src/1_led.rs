@@ -1,7 +1,7 @@
 #![no_std]
 #![no_main]
 
-extern crate panic_semihosting;
+use panic_semihosting as _;
 
 use cortex_m_rt::entry;
 
@@ -20,7 +20,7 @@ fn main() -> ! {
     let mut gpioc = dp.GPIOC.split(&mut rcc.apb2);
 
     let mut led_pin = gpioc.pc13.into_push_pull_output(&mut gpioc.crh);
-    led_pin.set_low();
+    led_pin.set_low().unwrap();
 
     loop {
         continue;
