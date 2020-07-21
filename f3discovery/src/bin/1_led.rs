@@ -7,14 +7,14 @@ use embedded_hal::digital::v2::OutputPin;
 use panic_semihosting as _;
 use stm32f3xx_hal as hal;
 
-use hal::stm32;
+use hal::pac;
 use hal::prelude::*;
 
 
 
 #[entry]
 fn main() -> ! {
-    let dp = stm32::Peripherals::take().unwrap();
+    let dp = pac::Peripherals::take().unwrap();
     let mut rcc = dp.RCC.constrain();
     let mut gpioe = dp.GPIOE.split(&mut rcc.ahb);
 

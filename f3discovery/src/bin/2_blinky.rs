@@ -9,13 +9,13 @@ use panic_semihosting as _;
 use stm32f3xx_hal as hal;
 
 use hal::prelude::*;
-use hal::stm32;
+use hal::pac;
 use hal::timer::Timer;
 
 
 #[entry]
 fn main() -> ! {
-    let dp = stm32::Peripherals::take().unwrap();
+    let dp = pac::Peripherals::take().unwrap();
     let mut rcc = dp.RCC.constrain();
     let mut flash = dp.FLASH.constrain();
     let clocks = rcc.cfgr.sysclk(64.mhz()) .pclk1(32.mhz())
