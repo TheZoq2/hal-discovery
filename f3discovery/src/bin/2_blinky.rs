@@ -25,7 +25,7 @@ fn main() -> ! {
     let mut led_pin = gpioe.pe9.into_push_pull_output(
         &mut gpioe.moder, &mut gpioe.otyper);
 
-    let mut timer = Timer::tim6(dp.TIM6, 1.hz(), clocks, &mut rcc.apb1);
+    let mut timer = Timer::tim2(dp.TIM2, 1.hz(), clocks, &mut rcc.apb1);
 
     loop {
         block!(timer.wait()).unwrap();
