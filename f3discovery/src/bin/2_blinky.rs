@@ -18,8 +18,7 @@ fn main() -> ! {
     let dp = pac::Peripherals::take().unwrap();
     let mut rcc = dp.RCC.constrain();
     let mut flash = dp.FLASH.constrain();
-    let clocks = rcc.cfgr.sysclk(64.mhz()) .pclk1(32.mhz())
-        .freeze(&mut flash.acr);
+    let clocks = rcc.cfgr.freeze(&mut flash.acr);
 
     let mut gpioe = dp.GPIOE.split(&mut rcc.ahb);
     let mut led_pin = gpioe.pe9.into_push_pull_output(
