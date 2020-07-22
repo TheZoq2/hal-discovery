@@ -6,6 +6,10 @@ edition = "2018"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
+[package.metadata]
+# Target chip for 'cargo flash'. Keep in sync with Embed.toml.
+chip = "stm32f103c8"
+
 [dependencies]
 
 cortex-m-rt = "0.6.12"

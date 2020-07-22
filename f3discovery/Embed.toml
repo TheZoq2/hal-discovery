@@ -1,2 +1,3 @@
 [default.general]
+# Keep in sync with Cargo.toml which is used by 'cargo flash'.
 chip = "STM32F303VCTx"
