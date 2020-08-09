@@ -1,3 +1,8 @@
 [default.general]
 # Keep in sync with Cargo.toml which is used by 'cargo flash'.
 chip = "STM32F303VCTx"
+
+[default.rtt]
+# Whether or not an RTTUI should be opened after flashing. This is exclusive
+# and cannot be used with GDB at the moment.
+enabled = true
