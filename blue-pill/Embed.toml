@@ -2,5 +2,8 @@
 # Keep in sync with Cargo.toml which is used by 'cargo flash'.
 chip="stm32f103c8"
 
-[default.gdb]
-enabled = true
+# [default.gdb]
+# enabled = true
+
+[default.rtt]
+enabled=true

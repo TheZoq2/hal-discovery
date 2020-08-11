@@ -13,8 +13,9 @@ chip = "stm32f103c8"
 [dependencies]
 
 cortex-m-rt = "0.6.12"
-panic-semihosting = "0.5.3"
+panic_rtt = "0.3.0"
 embedded-hal = "0.2.4"
+rtt-target = { version = "0.2.0", features = ["cortex-m"] }
 
 [dependencies.stm32f1xx-hal]
 features = ["stm32f103"]
