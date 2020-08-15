@@ -5,7 +5,8 @@
 use cortex_m_rt::entry;
 use embedded_hal::digital::v2::OutputPin;
 use nb::block;
-use panic_semihosting as _;
+use panic_rtt_target as _;
+use rtt_target::rtt_init_default;
 use stm32f3xx_hal as hal;
 
 use hal::prelude::*;
@@ -15,6 +16,8 @@ use hal::timer::Timer;
 
 #[entry]
 fn main() -> ! {
+    rtt_init_default!();
+
     let dp = pac::Peripherals::take().unwrap();
     let mut rcc = dp.RCC.constrain();
     let mut flash = dp.FLASH.constrain();
