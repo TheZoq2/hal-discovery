@@ -110,11 +110,22 @@ dependencies = [
  "cortex-m-semihosting",
  "embedded-hal",
  "log",
+ "lsm303dlhc",
+ "micromath",
  "nb 1.0.0",
  "panic-rtt-target",
  "rtt-target 0.2.0",
  "rtt_target_logger",
  "stm32f3xx-hal",
+]
+
+[[package]]
+name = "generic-array"
+version = "0.11.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "8107dafa78c80c848b71b60133954b4a58609a3a1a5f9af037ecc7f67280f369"
+dependencies = [
+ "typenum",
 ]
 
 [[package]]
@@ -142,6 +153,26 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "4fabed175da42fed1fa0746b0ea71f412aa9d35e76e95e59b192c64b9dc2bf8b"
 dependencies = [
  "cfg-if",
+]
+
+[[package]]
+name = "lsm303dlhc"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9e5d1a5c290951321d1b0d4a40edd828537de9889134a0e67c5146542ae57706"
+dependencies = [
+ "cast",
+ "embedded-hal",
+ "generic-array 0.11.1",
+]
+
+[[package]]
+name = "micromath"
+version = "1.0.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "cedf8513604f9696e9ed523511dd27e7ccb5502e414958f1669e492c7d85dcf1"
+dependencies = [
+ "generic-array 0.13.2",
 ]
 
 [[package]]

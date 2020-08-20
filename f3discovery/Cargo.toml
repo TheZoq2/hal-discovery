@@ -15,6 +15,8 @@ cortex-m-rt = "0.6.12"
 cortex-m-semihosting = "0.3.5"
 embedded-hal = "0.2.4"
 log = { version = "0.4.11", features = ["max_level_info", "release_max_level_info"] }
+lsm303dlhc = "0.2.0"
+micromath = { version = "1.0.1", features = ["vector"] }
 nb = "1.0.0"
 panic-rtt-target = { version = "0.1.0", features = ["cortex-m"] }
 rtt-target = { version = "0.2.0", features = ["cortex-m"] }
