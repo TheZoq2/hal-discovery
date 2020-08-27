@@ -34,14 +34,14 @@ const G_UNIT_XY_FLAT_THRESHOLD: f32 = COS_85_DEGREE;
 
 #[derive(Debug)]
 enum Direction {
-    N,
-    NE,
-    E,
-    SE,
-    S,
-    SW,
-    W,
-    NW,
+    North = 0,
+    NorthEast,
+    East,
+    SouthEast,
+    South,
+    SouthWest,
+    West,
+    NorthWest,
 }
 
 
@@ -98,14 +98,14 @@ fn tilt_direction(u: &F32x3) -> Option<Direction> {
         match at2n {
             // The first case contains the wrap-around of atan2_norms output
             // interval.
-            _ if 3.75 < at2n || at2n <= 0.25 => Some(Direction::N),
-            _ if 0.25 < at2n && at2n <= 0.75 => Some(Direction::NE),
-            _ if 0.75 < at2n && at2n <= 1.25 => Some(Direction::E),
-            _ if 1.25 < at2n && at2n <= 1.75 => Some(Direction::SE),
-            _ if 1.75 < at2n && at2n <= 2.25 => Some(Direction::S),
-            _ if 2.25 < at2n && at2n <= 2.75 => Some(Direction::SW),
-            _ if 2.75 < at2n && at2n <= 3.25 => Some(Direction::W),
-            _ if 3.25 < at2n && at2n <= 3.75 => Some(Direction::NW),
+            _ if 3.75 < at2n || at2n <= 0.25 => Some(Direction::North),
+            _ if 0.25 < at2n && at2n <= 0.75 => Some(Direction::NorthEast),
+            _ if 0.75 < at2n && at2n <= 1.25 => Some(Direction::East),
+            _ if 1.25 < at2n && at2n <= 1.75 => Some(Direction::SouthEast),
+            _ if 1.75 < at2n && at2n <= 2.25 => Some(Direction::South),
+            _ if 2.25 < at2n && at2n <= 2.75 => Some(Direction::SouthWest),
+            _ if 2.75 < at2n && at2n <= 3.25 => Some(Direction::West),
+            _ if 3.25 < at2n && at2n <= 3.75 => Some(Direction::NorthWest),
             _ => None,
         }
     }
@@ -148,7 +148,10 @@ fn main() -> ! {
     let led_w = gpioe.pe15.into_push_pull_output(&mut gpioe.moder, &mut gpioe.otyper);
     let led_nw = gpioe.pe8.into_push_pull_output(&mut gpioe.moder, &mut gpioe.otyper);
 
-    // TODO: Is there a convenient way of handling all LEDs an indiviual ones?
+    // TODO: Is there a convenient way of handling all and individual LEDs at the same time?
+    //
+    // TODO: Is there somehting which we could use to enforce that the indices
+    // below match the enum discriminants.
     let mut leds: [PEx<Output<PushPull>>; 8] = [
         led_n.downgrade(),
         led_ne.downgrade(),
@@ -200,17 +203,8 @@ fn main() -> ! {
                 led.set_low().unwrap();
             }
 
-            // TODO: Isn't thre a nice way to index the LED array by direction?
-            match direction {
-                Some(Direction::N) => leds[0].set_high().unwrap(),
-                Some(Direction::NE) => leds[1].set_high().unwrap(),
-                Some(Direction::E) => leds[2].set_high().unwrap(),
-                Some(Direction::SE) => leds[3].set_high().unwrap(),
-                Some(Direction::S) => leds[4].set_high().unwrap(),
-                Some(Direction::SW) => leds[5].set_high().unwrap(),
-                Some(Direction::W) => leds[6].set_high().unwrap(),
-                Some(Direction::NW) => leds[7].set_high().unwrap(),
-                _ => log::warn!("Unupported direction {:?}", direction),
+            if let Some(direction) = direction {
+                leds[direction as usize].set_high().unwrap();
             }
         }
     }
