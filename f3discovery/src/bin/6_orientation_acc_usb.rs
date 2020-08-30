@@ -2,6 +2,7 @@
 #![no_main]
 
 
+use bbqueue::{consts::*, ArrayLength, BBBuffer, Consumer, Producer};
 use cortex_m_rt::entry;
 use embedded_hal::blocking::i2c::{Write, WriteRead};
 use embedded_hal::digital::v2::OutputPin;
@@ -30,6 +31,8 @@ const COS_85_DEGREE: f32 = 0.087;
 // Consider the board as flat if it is tilted less than +/- 5 degrees to make
 // finding a flat position easy.
 const G_UNIT_XY_FLAT_THRESHOLD: f32 = COS_85_DEGREE;
+
+const OUTPUT_DATA_LENGTH: usize = 16;
 
 
 #[derive(Debug)]
@@ -86,9 +89,10 @@ fn g_from_raw_acc_value(g: &lsm303dlhc::I16x3) -> F32x3 {
 }
 
 
-fn poll_accel<I2C, E, M>(lsm303dlhc: &mut Lsm303dlhc<I2C>, leds: &mut [PEx<Output<M>>]) -> Result<(), E>
+fn poll_accel<I2C, E, M, N>(lsm303dlhc: &mut Lsm303dlhc<I2C>, leds: &mut [PEx<Output<M>>], producer: &mut Producer<N>) -> Result<(), E>
 where
     I2C: WriteRead<Error = E> + Write<Error = E>,
+    N: ArrayLength<u8>
 {
     let g_raw = lsm303dlhc.accel()?;
     let g = g_from_raw_acc_value(&g_raw);
@@ -119,6 +123,29 @@ where
             leds[direction as usize].set_high().unwrap();
         }
     }
+
+    // Generate output data if there is space available. Otherwise fail
+    // silently.
+    if let Ok(mut grant) = producer.grant_exact(OUTPUT_DATA_LENGTH) {
+        // FIXME: Generate actual output data.
+        grant[0] = 42;
+        grant[15] = 43;
+        grant.commit(OUTPUT_DATA_LENGTH);
+    }
+
+    Ok(())
+}
+
+
+fn poll_usb<N>(consumer: &mut Consumer<N>) -> Result<(), bbqueue::Error>
+where
+    N: ArrayLength<u8>
+{
+    let mut grant = consumer.read()?;
+    let buf = grant.buf();
+    let len = buf.len();
+
+    grant.release(len);
 
     Ok(())
 }
@@ -207,21 +234,21 @@ fn main() -> ! {
     }
 
 
-
     let mut timer = Timer::tim2(dp.TIM2, SAMPLE_FREQUENCY, clocks,
         &mut rcc.apb1);
+
+
+    let buffer: BBBuffer<U64> = BBBuffer::new();
+    let (mut producer, mut consumer) = buffer.try_split().unwrap();
+
 
     log::info!("main loop");
 
     loop {
         match timer.wait() {
-            Err(nb::Error::WouldBlock) => {
-                continue;
-            },
+            Ok(()) => poll_accel(&mut lsm303dlhc, &mut leds, &mut producer).unwrap(),
+            Err(nb::Error::WouldBlock) => poll_usb(&mut consumer).unwrap(),
             Err(nb::Error::Other(_)) => panic!("Failed"),
-            Ok(()) => {
-                poll_accel(&mut lsm303dlhc, &mut leds).unwrap();
-            },
         }
     }
 }
