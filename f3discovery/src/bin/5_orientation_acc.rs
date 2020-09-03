@@ -46,24 +46,24 @@ enum Direction {
 
 
 trait F32x3Ext {
-    fn euclidian_norm(v: &Self) -> f32;
-    fn unit(v: &Self) -> Self;
+    fn euclidian_norm(&self) -> f32;
+    fn unit(&self) -> Self;
 }
 
 
 impl F32x3Ext for F32x3 {
-    fn euclidian_norm(v: &F32x3) -> f32 {
-        (v.x * v.x + v.y * v.y + v.z * v.z).sqrt()
+    fn euclidian_norm(&self) -> f32 {
+        (self.x * self.x + self.y * self.y + self.z * self.z).sqrt()
     }
 
 
-    fn unit(v: &Self) -> Self {
-        let n = Self::euclidian_norm(v);
+    fn unit(&self) -> Self {
+        let n = self.euclidian_norm();
 
         F32x3 {
-            x: v.x / n,
-            y: v.y / n,
-            z: v.z / n,
+            x: self.x / n,
+            y: self.y / n,
+            z: self.z / n,
         }
     }
 }
@@ -180,7 +180,7 @@ fn main() -> ! {
 
         let g_raw = lsm303dlhc.accel().unwrap();
         let g = g_from_raw_acc_value(&g_raw);
-        let g_unit = F32x3Ext::unit(&g);
+        let g_unit = g.unit();
 
         log::debug!("g_unit: ({}, {}, {})", g_unit.x, g_unit.y, g_unit.z);
 
