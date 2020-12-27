@@ -141,7 +141,7 @@ fn poll_usb<N>(consumer: &mut Consumer<N>) -> Result<(), bbqueue::Error>
 where
     N: ArrayLength<u8>
 {
-    let mut grant = consumer.read()?;
+    let grant = consumer.read()?;
     let buf = grant.buf();
     let len = buf.len();
 
