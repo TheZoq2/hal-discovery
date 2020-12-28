@@ -196,7 +196,7 @@ fn main() -> ! {
 
     let scl = gpiob.pb6.into_af4(&mut gpiob.moder, &mut gpiob.afrl);
     let sda = gpiob.pb7.into_af4(&mut gpiob.moder, &mut gpiob.afrl);
-    let i2c = I2c::i2c1(dp.I2C1, (scl, sda), I2C_FREQUENCY, clocks,
+    let i2c = I2c::new(dp.I2C1, (scl, sda), I2C_FREQUENCY, clocks,
         &mut rcc.apb1);
 
     let mut lsm303dlhc = Lsm303dlhc::new(i2c).unwrap();

@@ -17,12 +17,12 @@ cortex-m-semihosting = "0.3.5"
 embedded-hal = "0.2.4"
 log = { version = "0.4.11", features = ["max_level_info", "release_max_level_info"] }
 lsm303dlhc = "0.2.0"
-micromath = { version = "1.0.1", features = ["vector"] }
+micromath = { version = "1.1.0", features = ["vector"] }
 nb = "1.0.0"
 panic-rtt-target = { version = "0.1.0", features = ["cortex-m"] }
 rtt-target = { version = "0.2.0", features = ["cortex-m"] }
 rtt_target_logger = { path = "../common/rtt_target_logger" }
-stm32f3xx-hal = { version = "0.5.0", features = ["stm32f303xc"] }
+stm32f3xx-hal = { version = "0.6.1", features = ["stm32f303xc"] }
 
 [features]
 rt = ["stm32f3xx-hal/rt"]
