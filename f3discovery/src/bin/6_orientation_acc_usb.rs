@@ -8,7 +8,7 @@ use embedded_hal::blocking::i2c::{Write, WriteRead};
 use embedded_hal::digital::v2::OutputPin;
 use lsm303dlhc::{AccelOdr, Lsm303dlhc, Sensitivity};
 use micromath::F32Ext;
-use micromath::vector::F32x3;
+use micromath::vector::{F32x3, VectorExt};
 use panic_rtt_target as _;
 use rtt_target::rtt_init_print;
 use rtt_target_logger::RttTargetLogger;
@@ -56,7 +56,7 @@ trait F32x3Ext {
 
 impl F32x3Ext for F32x3 {
     fn euclidian_norm(v: &F32x3) -> f32 {
-        (v.x * v.x + v.y * v.y + v.z * v.z).sqrt()
+        v.magnitude()
     }
 
 
